@@ -4,10 +4,12 @@
 __author__ = 'ipetrash'
 
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
+from third_party.mini_played_games_parser import get_played_games
 
 
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False
 
 
 @app.route("/")
@@ -16,6 +18,11 @@ def index():
         "index.html",
         title='Парсер игр'
     )
+
+
+@app.route("/get_played_games")
+def played_games():
+    return jsonify(get_played_games())
 
 
 if __name__ == '__main__':
