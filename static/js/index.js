@@ -34,7 +34,7 @@ function show_error(text) {
 }
 
 function get_played_games(on_response_func) {
-    const timerName = "get_played_games";
+    const timerName = "load games";
     startTimer(timerName);
     setVisibleProgress(true);
 
@@ -63,20 +63,15 @@ function check_actuality_of_cache() {
         return;
     }
 
-    const timerName = "check_actuality_of_cache";
+    const timerName = "check cache";
     startTimer(timerName);
     console.log(timerName);
 
     get_played_games(platforms => {
-        const timerNameIsActualCache = "is_actual_cache";
-        startTimer(timerNameIsActualCache);
-
         let is_actual_cache = deep_compare(
             platforms,
             JSON.parse(localStorage.cache_result_json)
         );
-
-        finishTimer(timerNameIsActualCache);
 
         // Если кэш актуален
         if (is_actual_cache) {
@@ -250,7 +245,7 @@ function restoreNodesState() {
 
     let tree = $('#tree');
 
-    const timerName = "restore nodes state";
+    const timerName = "restore nodes";
     startTimer(timerName);
 
     let nodeExpandedStates = new Map(JSON.parse(localStorage.nodeExpandedStates));
@@ -268,7 +263,7 @@ function restoreNodesState() {
 }
 
 function update_tree_view(tree_data) {
-    const timerName = "update_tree_view";
+    const timerName = "update tree view";
 
     if (tree_data == null) {
         let result_json = localStorage.cache_result_json;
@@ -321,7 +316,7 @@ function update_tree(result_json=null, tree_data=null) {
 }
 
 function process_played_games(platforms) {
-    const timerName = "process_played_games";
+    const timerName = "process";
     startTimer(timerName);
 
     setVisibleProgress(true);
@@ -377,7 +372,7 @@ function search(e) {
 }
 
 function updateStatistics(platforms=null) {
-    const timerName = "update statistics";
+    const timerName = "statistics";
     startTimer(timerName);
 
     if (platforms == null) {
@@ -500,6 +495,12 @@ $(document).ready(function() {
             search.val(search.val() + text).trigger("input");
         }
     })
+
+    $('#notify_need_refresh').click(refresh_parse);
+    $('.tree-search-clear').click(function() {
+        $('#tree-search').val('');
+        search();
+    });
 });
 
 $(document).ready(function() {
