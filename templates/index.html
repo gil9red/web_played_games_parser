@@ -122,7 +122,7 @@
         </div>
         <div class="container-fluid ml-0 mr-0 pl-0 pr-0">
             <div class="row flex-row-reverse">
-                <div class="col-md-3 w-100">
+                <div class="col-md-3 w-100 mb-3">
                     <div class="p-1">
                         <input
                             id="switch_visible_table_stats"
@@ -132,16 +132,33 @@
                             data-onstyle="primary" data-offstyle="secondary"
                         >
                     </div>
-                    <table id="table_stats" class="table collapse">
-                        <tr><td>Всего:</td><td id="stats_total">-</td></tr>
-                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Игр:</td><td id="stats_total_games">-</td></tr>
-                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;DLC:</td><td id="stats_total_DLC">-</td></tr>
-                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Другое:</td><td id="stats_total_other">-</td></tr>
-                        <tr><td>Платформ:</td><td id="stats_total_platforms">-</td></tr>
-                        <tr><td>Поиск (мс):</td><td id="stats_elapsed_time_search">-</td></tr>
-                        <tr style="display: none"><td>Найдено игр:</td><td id="stats_found_game">-</td></tr>
-                        <tr><th scope="row" colspan="2">Таймеры:</th></tr>
-                    </table>
+                    <div id="switch_visible_table_stats_body" class="collapse">
+                        <table id="table_stats" class="table mb-0">
+                            <tr><td>Всего:</td><td id="stats_total">-</td></tr>
+                            <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Игр:</td><td id="stats_total_games">-</td></tr>
+                            <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;DLC:</td><td id="stats_total_DLC">-</td></tr>
+                            <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Другое:</td><td id="stats_total_other">-</td></tr>
+                            <tr><td>Платформ:</td><td id="stats_total_platforms">-</td></tr>
+                            <tr><td>Поиск (мс):</td><td id="stats_elapsed_time_search">-</td></tr>
+                            <tr style="display: none"><td>Найдено игр:</td><td id="stats_found_game">-</td></tr>
+                        </table>
+                        <div id="accordion_timers">
+                            <div class="card">
+                                <div class="card-header p-0" id="heading_timers">
+                                    <div class="mb-0">
+                                        <button class="btn btn-link w-100" data-toggle="collapse" data-target="#collapse_timers" aria-expanded="false" aria-controls="collapse_timers">
+                                            Таймеры:
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="collapse_timers" class="collapse" aria-labelledby="heading_timers" data-parent="#accordion_timers">
+                                    <div class="card-body p-0">
+                                        <table id="table_timers" class="table table-sm"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-9">
                     <div class="flex-column">

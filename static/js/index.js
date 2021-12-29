@@ -7,8 +7,8 @@ function on_change_visible_table_stats(visible) {
 
     localStorage.switch_visible_table_stats = visible;
 
-    let table = $('#table_stats');
-    table.toggleClass('show', visible);
+    let el = $('#switch_visible_table_stats_body');
+    el.toggleClass('show', visible);
 }
 
 $(document).ready(function () {
@@ -220,7 +220,7 @@ function startTimer(timerName) {
     let timerNameId = timerName.replace(/\W/g, '_');
     let timerValueEl = $('#' + timerNameId);
     if (timerValueEl.length == 0) {
-        $('#table_stats').append(`<tr><td>${timerName} (мс):</td><td id="${timerNameId}"></td></tr>`);
+        $('#table_timers').append(`<tr><td>${timerName} (мс):</td><td id="${timerNameId}"></td></tr>`);
     }
 }
 
