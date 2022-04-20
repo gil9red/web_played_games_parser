@@ -1,4 +1,8 @@
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const TIMER_NAME_SEARCH = "Поиск";
+
+// SOURCE: https://stackoverflow.com/a/34842797/5909792
+const hashCode = s => s.split('').reduce((a,b) => (((a << 5) - a) + b.charCodeAt(0))|0, 0)
 
 function on_change_visible_table_stats(visible) {
     if (visible == null) {
@@ -34,7 +38,7 @@ function show_error(text) {
 }
 
 function get_played_games(on_response_func) {
-    const timerName = "load games";
+    const timerName = "Загрузка игр";
     startTimer(timerName);
     setVisibleProgress(true);
 
@@ -63,7 +67,7 @@ function check_actuality_of_cache() {
         return;
     }
 
-    const timerName = "check cache";
+    const timerName = "Проверка кэша";
     startTimer(timerName);
     console.log(timerName);
 
@@ -178,7 +182,7 @@ function onSearchComplete(event, results) {
 
         updateGamesNumbers();
 
-        finishTimer("search", timeDiff => $('#stats_elapsed_time_search').text(timeDiff), " [onSearchComplete]");
+        finishTimer(TIMER_NAME_SEARCH, timeDiff => $('#stats_elapsed_time_search').text(timeDiff), " [onSearchComplete]");
 
         let stats_found_game = $('#stats_found_game');
         stats_found_game.parent().show();
@@ -204,7 +208,7 @@ function onSearchCleared(event, results) {
 
         restoreNodesState();
 
-        finishTimer("search", timeDiff => $('#stats_elapsed_time_search').text("-"), " [onSearchCleared]");
+        finishTimer(TIMER_NAME_SEARCH, timeDiff => $('#stats_elapsed_time_search').text("-"), " [onSearchCleared]");
 
         let stats_found_game = $('#stats_found_game');
         stats_found_game.parent().hide();
@@ -217,7 +221,7 @@ function onSearchCleared(event, results) {
 function startTimer(timerName) {
     window["@" + timerName] = new Date();
 
-    let timerNameId = timerName.replace(/\W/g, '_');
+    let timerNameId = 'timerNameId_' + hashCode(timerName);
     let timerValueEl = $('#' + timerNameId);
     if (timerValueEl.length == 0) {
         $('#table_timers').append(`<tr><td>${timerName} (мс):</td><td id="${timerNameId}"></td></tr>`);
@@ -229,7 +233,7 @@ function finishTimer(timerName, onTimeDiffFunc, postText="") {
     let timeDiff = new Date() - startTime; // ms
     console.log(`Elapsed time "${timerName}": ${timeDiff} ms` + postText);
 
-    let timerNameId = timerName.replace(/\W/g, '_');
+    let timerNameId = 'timerNameId_' + hashCode(timerName);
     let timerValueEl = $('#' + timerNameId);
     timerValueEl.text(timeDiff);
 
@@ -245,7 +249,7 @@ function restoreNodesState() {
 
     let tree = $('#tree');
 
-    const timerName = "restore nodes";
+    const timerName = "Восстановление дерева";
     startTimer(timerName);
 
     let nodeExpandedStates = new Map(JSON.parse(localStorage.nodeExpandedStates));
@@ -263,7 +267,7 @@ function restoreNodesState() {
 }
 
 function update_tree_view(tree_data) {
-    const timerName = "update tree view";
+    const timerName = "Обновление дерева";
 
     if (tree_data == null) {
         let result_json = localStorage.cache_result_json;
@@ -316,7 +320,7 @@ function update_tree(result_json=null, tree_data=null) {
 }
 
 function process_played_games(platforms) {
-    const timerName = "process";
+    const timerName = "Обработка игр";
     startTimer(timerName);
 
     setVisibleProgress(true);
@@ -343,7 +347,7 @@ function setVisibleProgress(visible) {
 function search(e) {
     setVisibleProgress(true);
 
-    startTimer("search");
+    startTimer(TIMER_NAME_SEARCH);
 
     let tree = $('#tree');
     let text = $('#tree-search').val();
@@ -372,7 +376,7 @@ function search(e) {
 }
 
 function updateStatistics(platforms=null) {
-    const timerName = "statistics";
+    const timerName = "Статистика";
     startTimer(timerName);
 
     if (platforms == null) {
