@@ -383,16 +383,28 @@ function updateStatistics(platforms=null) {
         platforms = JSON.parse(platforms);
     }
 
+    let total_platforms = 0;
     let total_games     = 0;
     let total_dlc       = 0;
     let total_other     = 0;
-    let total_platforms = 0;
+    let total_played    = 0;
+    let total_viewed    = 0;
 
     for (let [platform_name, categories] of Object.entries(platforms)) {
         total_platforms++;
 
         for (let [category_name, games] of Object.entries(categories)) {
             total_games += games.length;
+
+            // FINISHED_GAME or NOT_FINISHED_GAME
+            if (category_name.endsWith('_GAME')) {
+                total_played += games.length;
+            }
+
+            // FINISHED_WATCHED or NOT_FINISHED_WATCHED
+            if (category_name.endsWith('_WATCHED')) {
+                total_viewed += games.length;
+            }
 
             for (let game of games) {
                 // Example: Dishonored: The Knife of Dunwall (DLC)
@@ -401,10 +413,10 @@ function updateStatistics(platforms=null) {
                     continue;
                 }
                 if (m[1] == 'DLC') {
-                    total_dlc += 1;
+                    total_dlc++;
                 }
                 if (['DEMO', 'Beta', 'MOD'].includes(m[1])) {
-                    total_other += 1;
+                    total_other++;
                 }
             }
         }
@@ -414,6 +426,8 @@ function updateStatistics(platforms=null) {
     $('#stats_total_games').text(total_games - total_dlc - total_other);
     $('#stats_total_DLC').text(total_dlc);
     $('#stats_total_other').text(total_other);
+    $('#stats_total_played').text(total_played);
+    $('#stats_total_viewed').text(total_viewed);
     $('#stats_total_platforms').text(total_platforms);
 
     finishTimer(timerName);
