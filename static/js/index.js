@@ -383,12 +383,12 @@ function updateStatistics(platforms=null) {
         platforms = JSON.parse(platforms);
     }
 
-    let total_platforms = 0;
     let total_games     = 0;
     let total_dlc       = 0;
     let total_other     = 0;
     let total_played    = 0;
     let total_viewed    = 0;
+    let total_platforms = 0;
 
     for (let [platform_name, categories] of Object.entries(platforms)) {
         total_platforms++;
