@@ -364,6 +364,8 @@ function search(e) {
     let text = $('#tree-search').val();
     console.log(`Call search "${text}"`);
 
+    localStorage.search_text = text;
+
     if (text.length == 0) {
         tree.treeview('clearSearch');
         return;
@@ -506,7 +508,9 @@ $(document).ready(function() {
     var typingTimer = null;       // Timer identifier
     var doneTypingInterval = 300; // Time in ms
 
-    $('#tree-search').on('input', function() {
+    let tree_search = $('#tree-search');
+
+    tree_search.on('input', function() {
         clearTimeout(typingTimer);
         typingTimer = setTimeout(search, doneTypingInterval);
     });
@@ -517,26 +521,33 @@ $(document).ready(function() {
             return;
         }
 
-        let search = $('#tree-search');
-        search.focus();
+        tree_search.focus();
 
         if (event.type == "keyup" && event.key.length == 1) {
-            search.val(search.val() + event.key).trigger("input");
+            tree_search.val(tree_search.val() + event.key).trigger("input");
 
         } else if (event.type == "paste") {
             let text = event.originalEvent.clipboardData.getData('text');
-            search.val(search.val() + text).trigger("input");
+            tree_search.val(tree_search.val() + text).trigger("input");
         }
     })
 
     $('#notify_need_refresh').click(refresh_parse);
     $('.tree-search-clear').click(function() {
-        $('#tree-search').val('');
+        tree_search.val('');
         search();
     });
 });
 
 $(document).ready(function() {
+    // Заполнение строки поиска из локального хранилища
+    // Нужно вызвать до работы с деревом, что ниже
+    let tree_search = $('#tree-search');
+    let search_text = localStorage.search_text;
+    if (search_text && !tree_search.val()) {
+        tree_search.val(search_text);
+    }
+
     // Попробуем при загрузке страницы вытащить данные из кэша
     if (localStorage.cache_result_json != null) {
         console.log("Build from cache");
