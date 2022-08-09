@@ -374,9 +374,6 @@ function search(e) {
     tree.treeview("collapseAll", [ {silent: true} ]);
 
     tree.treeview('search', [ text, {
-        ignoreCase: true,    // Case insensitive
-        exactMatch: false,   // Like or equals
-        revealResults: true, // Reveal matching nodes
         onMatched: function(node, match) {
             // Only games
             if (node.level != 3) {
