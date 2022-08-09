@@ -4,6 +4,11 @@ const TIMER_NAME_SEARCH = "Поиск";
 // SOURCE: https://stackoverflow.com/a/34842797/5909792
 const hashCode = s => s.split('').reduce((a,b) => (((a << 5) - a) + b.charCodeAt(0))|0, 0)
 
+function getNode(nodeEl) {
+    let nodeId = nodeEl.attr('data-nodeid');
+    return $('#tree').treeview("getNode", [ nodeId ]);
+}
+
 function on_change_visible_table_stats(visible) {
     if (visible == null) {
         visible = $("#switch_visible_table_stats").prop('checked');
@@ -170,9 +175,7 @@ function onSearchComplete(event, results) {
         let number = 0;
 
         $("#tree .node-tree.game").each( function(index) {
-            let nodeEl = $(this);
-            let nodeId = nodeEl.attr('data-nodeid');
-            let node = $('#tree').treeview("getNode", [ nodeId ]);
+            let node = getNode($(this));
             $('#tree').treeview("setVisible", [ node, node.searchResult ]);
 
             if (node.searchResult) {
@@ -198,9 +201,7 @@ function onSearchComplete(event, results) {
 function onSearchCleared(event, results) {
     try {
         $("#tree .node-tree.node-hidden").each( function(index) {
-            let nodeEl = $(this);
-            let nodeId = nodeEl.attr('data-nodeid');
-            let node = $('#tree').treeview("getNode", [ nodeId ]);
+            let node = getNode($(this));
             $('#tree').treeview("setVisible", [ node, true ]);
         });
 
@@ -440,10 +441,7 @@ function updateStatistics(platforms=null) {
 function updateGamesNumbers() {
     let categoryId_by_nums = new Map();
     $("#tree .node-tree.game").not('.node-hidden').each( function(index) {
-        let nodeEl = $(this);
-        let nodeId = nodeEl.attr('data-nodeid');
-        let node = $('#tree').treeview("getNode", [nodeId]);
-
+        let node = getNode($(this));
         categoryId_by_nums.set(
             node.parentId,
             (categoryId_by_nums.get(node.parentId) || 0) + 1
@@ -452,9 +450,8 @@ function updateGamesNumbers() {
 
     let platformId_by_nums = new Map();
     $("#tree .node-tree.category").each( function(index) {
-        let nodeEl = $(this);
-        let nodeId = nodeEl.attr('data-nodeid');
-        let node = $('#tree').treeview("getNode", [ nodeId ]);
+        let node = getNode($(this));
+        let nodeId = node.nodeId;
         let nums = categoryId_by_nums.get(nodeId) || 0;
 
         platformId_by_nums.set(
@@ -485,6 +482,12 @@ function updateGamesNumbers() {
         node.state.expanded = !node.state.expanded;
         $('#tree').treeview("toggleNodeExpanded", [ [node] ]);
     }
+
+    // Прячем пустые платформы и категории
+    $("#tree .node-tree:has(> .badge:contains('0'))").each( function(index) {
+        let node = getNode($(this));
+        $('#tree').treeview("setVisible", [ node, false ]);
+    });
 }
 
 $(document).ready(function() {
