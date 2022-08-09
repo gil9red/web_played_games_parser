@@ -305,7 +305,14 @@ function update_tree_view(tree_data) {
         onSearchCleared: onSearchCleared,
     });
     $('#tree').on("click", function(event) {
-        let node = getNode($(event.target));
+        let el = $(event.target);
+
+        // Если клик пришелся на тег, нужно провести клик на его узел
+        if (el.hasClass('badge')) {
+            el = el.parent();
+        }
+
+        let node = getNode(el);
         if (node.nodes == undefined) {
             // ignore
             return;
