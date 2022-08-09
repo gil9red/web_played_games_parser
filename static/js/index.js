@@ -484,9 +484,11 @@ function updateGamesNumbers() {
     }
 
     // Прячем пустые платформы и категории
-    $("#tree .node-tree:has(> .badge:contains('0'))").each( function(index) {
+    $("#tree .node-tree:has(> .badge)").each( function(index) {
         let node = getNode($(this));
-        $('#tree').treeview("setVisible", [ node, false ]);
+        if (node.tags[0] == "0") {
+            $('#tree').treeview("setVisible", [ node, false ]);
+        }
     });
 }
 
