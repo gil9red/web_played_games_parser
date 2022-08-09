@@ -26,63 +26,7 @@
     <!-- noty -->
     <script src="{{ url_for('static', filename='js/jquery.noty.packaged.min.js') }}"></script>
 
-    <style>
-        .platform {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        .category {
-            font-size: 1.1rem;
-        }
-        .game {
-            font-size: 1rem;
-        }
-
-        /* Small devices (Phones, 600px and down) */
-        @media only screen and (max-width: 600px) {
-            .platform {
-                font-weight: bold;
-                font-size: 1rem;
-            }
-            .category {
-                font-size: 1rem;
-            }
-            .game {
-                font-size: 0.9rem;
-            }
-        }
-
-        .treeview .badge {
-            margin-left: 0.4em;
-        }
-
-        .noselect {
-          -webkit-touch-callout: none; /* iOS Safari */
-            -webkit-user-select: none; /* Safari */
-             -khtml-user-select: none; /* Konqueror HTML */
-               -moz-user-select: none; /* Old versions of Firefox */
-                -ms-user-select: none; /* Internet Explorer/Edge */
-                    user-select: none; /* Non-prefixed version, currently
-                                          supported by Chrome, Opera and Firefox */
-        }
-
-        #glass {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            overflow: auto;
-            z-index: 1000;
-            background: rgba(100, 100, 100, .5);
-        }
-        #glass .spinner-border {
-            width: 10rem;
-            height: 10rem;
-            border: 0.5em solid currentColor;
-            border-right-color: transparent;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
     <div id="glass" class="container-fluid" style="display: none">
