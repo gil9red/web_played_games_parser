@@ -116,7 +116,7 @@ function onChangeNodeExpanded(event, node) {
     );
 
     for (let child of node.nodes) {
-        if (child.tags[0] == "0") {
+        if (child.tags && child.tags[0] == "0") {
             $('#tree').treeview("setVisible", [ child, false ]);
         }
     }
