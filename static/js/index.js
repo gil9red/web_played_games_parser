@@ -299,10 +299,7 @@ function update_tree_view(tree_data) {
         onSearchCleared: onSearchCleared,
     });
     $('#tree').on("click", function(event) {
-        let nodeEl = $(event.target);
-        let nodeId = nodeEl.attr('data-nodeid');
-        let node = $('#tree').treeview("getNode", [ nodeId ]);
-
+        let node = getNode($(event.target));
         if (node.nodes == undefined) {
             // ignore
             return;
