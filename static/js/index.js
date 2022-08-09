@@ -114,6 +114,12 @@ function onChangeNodeExpanded(event, node) {
     localStorage.nodeExpandedStates = JSON.stringify(
         Array.from(nodeExpandedStates.entries())
     );
+
+    for (let child of node.nodes) {
+        if (child.tags[0] == "0") {
+            $('#tree').treeview("setVisible", [ child, false ]);
+        }
+    }
 }
 
 function onRendered(event, nodes) {
