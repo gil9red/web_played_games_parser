@@ -145,12 +145,14 @@ function onRendered(event, nodes) {
 
             // Show text after long press
             node.$el.on('mousedown touchstart', function(event) {
-                longPressTimer = setTimeout(() => {
-                    // Show tooltip
-                    node.$el.tooltip('show');
-                    setTimeout(() => node.$el.tooltip('hide'), 1000);
-
-                }, 2000);
+                longPressTimer = setTimeout(
+                    () => {
+                        // Show tooltip
+                        node.$el.tooltip('show');
+                        setTimeout(() => node.$el.tooltip('hide'), 2000);
+                    },
+                    1000
+                );
             }).on('mouseup mouseleave touchend', function() {
                 clearTimeout(longPressTimer);
             });
