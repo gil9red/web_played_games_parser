@@ -289,6 +289,7 @@ function update_tree_view(tree_data) {
         showTags: true,
         levels: 3,
         highlightSelected: false,
+        highlightSearchResults: false,
 
         // Events
         onNodeCollapsed: onChangeNodeExpanded,
