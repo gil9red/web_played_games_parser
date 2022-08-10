@@ -352,6 +352,7 @@ function setVisibleProgress(visible) {
         $("#glass").toggle(visible);
     } else {
         $("#progressBar").parent().parent().parent().toggle(visible);
+        $("#glass").hide();
     }
 }
 
@@ -537,6 +538,8 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
+    $('#context').show();
+
     // Заполнение строки поиска из локального хранилища
     // Нужно вызвать до работы с деревом, что ниже
     let tree_search = $('#tree-search');

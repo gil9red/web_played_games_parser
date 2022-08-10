@@ -29,7 +29,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
-    <div id="glass" class="container-fluid" style="display: none">
+    <div id="glass" class="container-fluid">
         <div class="row align-items-center h-100">
             <div class="col d-flex justify-content-center">
                 <div class="spinner-border text-primary" style="margin: auto;" role="status">
@@ -64,7 +64,7 @@
                 </div>
             </div>
         </div>
-        <div class="row flex-row-reverse">
+        <div id="context" class="row flex-row-reverse" style="display: none">
             <div class="col-md-3 w-100 mb-3">
                 <input
                     id="switch_visible_table_stats"
