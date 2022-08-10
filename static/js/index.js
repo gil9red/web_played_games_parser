@@ -288,7 +288,6 @@ function update_tree_view(tree_data) {
         collapseIcon: 'glyphicon glyphicon-chevron-down',
         showTags: true,
         levels: 3,
-        multiSelect: true,
         highlightSelected: false,
 
         // Events
