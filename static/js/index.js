@@ -369,8 +369,8 @@ function search(e) {
 
     localStorage.search_text = text;
 
+    tree.treeview('clearSearch');
     if (text.length == 0) {
-        tree.treeview('clearSearch');
         return;
     }
 
