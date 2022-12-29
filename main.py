@@ -4,15 +4,43 @@
 __author__ = 'ipetrash'
 
 
+import json
+
+from pathlib import Path
+from typing import Optional
+
 from flask import Flask, render_template, jsonify
+
+# pip install Flask-HTTPAuth
+from flask_httpauth import HTTPDigestAuth
+
 from third_party.mini_played_games_parser import get_played_games
+
+
+DIR = Path(__file__).resolve().parent
+PATH_USERS = DIR / 'users.json'
+
+# Example:
+# {
+#     "<LOGIN>": "<PASSWORD>"
+# }
+users = json.loads(PATH_USERS.read_text('utf-8'))
 
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
+app.config['SECRET_KEY'] = '<SECRET_KEY_HERE>'
+
+auth = HTTPDigestAuth()
+
+
+@auth.get_password
+def get_password(username: str) -> Optional[str]:
+    return users.get(username)
 
 
 @app.route("/")
+@auth.login_required
 def index():
     return render_template(
         "index.html",
