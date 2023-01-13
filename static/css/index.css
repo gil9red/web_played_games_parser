@@ -54,13 +54,13 @@
     border-right-color: transparent;
 }
 
-.card .card-header {
+.card-header {
     border: 0;
     border-radius: 2px;
     padding: 0;
 }
 
-.card .card-header .btn-header-link {
+.card-header [data-toggle="collapse"] {
     background: #6c757d;
     color: white;
     display: block;
@@ -68,11 +68,11 @@
     box-shadow: 0 0 0 0 !important;
 }
 
-.card .card-header .btn-header-link.collapsed:after {
+.card-header [data-toggle="collapse"].collapsed:after {
     content: "⮝";
 }
 
-.card .card-header .btn-header-link:after {
+.card-header [data-toggle="collapse"]:after {
     content: "⮟";
     font-weight: 900;
     float: right;

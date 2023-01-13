@@ -9,20 +9,19 @@ function getNode(nodeEl) {
     return $('#tree').treeview("getNode", [ nodeId ]);
 }
 
-// TODO: Поддержать сохранение и восстановление состояния collapse после загрузки страницы
-//function on_change_visible_table_stats(visible) {
-//    localStorage.switch_visible_table_stats = visible;
-//}
-//
-//$(document).ready(function () {
-//    if (localStorage.switch_visible_table_stats != null) {
-//        let visible = localStorage.switch_visible_table_stats == "true";
-//        $('#switch_visible_table_stats').collapse(visible ? 'show' : 'hide');
-//    }
-//
-//    $('#switch_visible_table_stats').on("show.bs.collapse", () => on_change_visible_table_stats(true));
-//    $('#switch_visible_table_stats').on("hide.bs.collapse", () => on_change_visible_table_stats(false));
-//});
+function on_change_visible_table_stats(visible) {
+    localStorage.switch_visible_table_stats = visible;
+}
+
+$(document).ready(function () {
+    if (localStorage.switch_visible_table_stats != null) {
+        let visible = localStorage.switch_visible_table_stats == "true";
+        $('#switch_visible_table_stats').collapse(visible ? 'show' : 'hide');
+    }
+
+    $('#switch_visible_table_stats').on("show.bs.collapse", () => on_change_visible_table_stats(true));
+    $('#switch_visible_table_stats').on("hide.bs.collapse", () => on_change_visible_table_stats(false));
+});
 
 function show_error(text) {
     console.log('[-]', text);
