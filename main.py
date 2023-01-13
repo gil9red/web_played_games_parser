@@ -54,7 +54,7 @@ def played_games():
 
 
 if __name__ == '__main__':
-    host = '127.0.0.1'
+    host = '0.0.0.0'
     port = 10008
     print(f"HTTP server running on http://{'127.0.0.1' if host == '0.0.0.0' else host}:{port}")
 
