@@ -53,3 +53,27 @@
     border: 0.5em solid currentColor;
     border-right-color: transparent;
 }
+
+.card .card-header {
+    border: 0;
+    border-radius: 2px;
+    padding: 0;
+}
+
+.card .card-header .btn-header-link {
+    background: #6c757d;
+    color: white;
+    display: block;
+    text-align: left;
+    box-shadow: 0 0 0 0 !important;
+}
+
+.card .card-header .btn-header-link.collapsed:after {
+    content: "⮝";
+}
+
+.card .card-header .btn-header-link:after {
+    content: "⮟";
+    font-weight: 900;
+    float: right;
+}

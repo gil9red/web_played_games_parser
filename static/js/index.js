@@ -9,31 +9,20 @@ function getNode(nodeEl) {
     return $('#tree').treeview("getNode", [ nodeId ]);
 }
 
-function on_change_visible_table_stats(visible) {
-    if (visible == null) {
-        visible = $("#switch_visible_table_stats").prop('checked');
-    }
-
-    localStorage.switch_visible_table_stats = visible;
-
-    let el = $('#switch_visible_table_stats_body');
-    el.toggleClass('show', visible);
-}
-
-$(document).ready(function () {
-    // NOTE: On android Chrome not auto restore checked value after refresh page
-    if (localStorage.switch_visible_table_stats != null) {
-        let checked = localStorage.switch_visible_table_stats == "true";
-        $('#switch_visible_table_stats').bootstrapToggle(checked ? 'on' : 'off');
-    }
-
-    on_change_visible_table_stats();
-
-    $('#switch_visible_table_stats').change(function() {
-        let visible = $(this).prop('checked');
-        on_change_visible_table_stats(visible);
-    });
-});
+// TODO: Поддержать сохранение и восстановление состояния collapse после загрузки страницы
+//function on_change_visible_table_stats(visible) {
+//    localStorage.switch_visible_table_stats = visible;
+//}
+//
+//$(document).ready(function () {
+//    if (localStorage.switch_visible_table_stats != null) {
+//        let visible = localStorage.switch_visible_table_stats == "true";
+//        $('#switch_visible_table_stats').collapse(visible ? 'show' : 'hide');
+//    }
+//
+//    $('#switch_visible_table_stats').on("show.bs.collapse", () => on_change_visible_table_stats(true));
+//    $('#switch_visible_table_stats').on("hide.bs.collapse", () => on_change_visible_table_stats(false));
+//});
 
 function show_error(text) {
     console.log('[-]', text);

@@ -14,13 +14,11 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap-4.4.1/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='my-bootstrap-treeview-2.1.0/my-bootstrap-treeview.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap4-toggle-v3.5.0/bootstrap4-toggle.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='glyphicon/glyphicon.css') }}">
 
     <script src="{{ url_for('static', filename='js/jquery-2.1.4.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap-4.4.1/bootstrap.bundle.js') }}"></script>
     <script src="{{ url_for('static', filename='my-bootstrap-treeview-2.1.0/my-bootstrap-treeview.js') }}"></script>
-    <script src="{{ url_for('static', filename='bootstrap4-toggle-v3.5.0/bootstrap4-toggle.js') }}"></script>
     <script src="{{ url_for('static', filename='js/parser.js') }}"></script>
 
     <!-- noty -->
@@ -66,39 +64,45 @@
         </div>
         <div id="context" class="row flex-row-reverse" style="display: none">
             <div class="col-md-3 w-100 mb-3">
-                <input
-                    id="switch_visible_table_stats"
-                    type="checkbox"
-                    data-toggle="toggle" data-width="100%" data-height="30"
-                    data-on="Статистика" data-off="Статистика"
-                    data-onstyle="primary" data-offstyle="secondary"
-                >
-                <div id="switch_visible_table_stats_body" class="collapse">
-                    <table id="table_stats" class="table mb-0">
-                        <tr><td>Всего:</td><td id="stats_total">-</td></tr>
-                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Игр:</td><td id="stats_total_games">-</td></tr>
-                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;DLC:</td><td id="stats_total_DLC">-</td></tr>
-                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Другое:</td><td id="stats_total_other">-</td></tr>
-                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Пройдено:</td><td id="stats_total_finished_game">-</td></tr>
-                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Не пройдено:</td><td id="stats_total_not_finished_game">-</td></tr>
-                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Просмотрено:</td><td id="stats_total_finished_watched">-</td></tr>
-                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Не просмотрено:</td><td id="stats_total_not_finished_watched">-</td></tr>
-                        <tr><td>Платформ:</td><td id="stats_total_platforms">-</td></tr>
-                        <tr><td>Поиск (мс):</td><td id="stats_elapsed_time_search">-</td></tr>
-                        <tr style="display: none"><td>Найдено игр:</td><td id="stats_found_game">-</td></tr>
-                    </table>
-                    <div id="accordion_timers">
-                        <div class="card">
-                            <div class="card-header p-0" id="heading_timers">
-                                <div class="mb-0">
-                                    <button class="btn btn-link w-100" data-toggle="collapse" data-target="#collapse_timers" aria-expanded="false" aria-controls="collapse_timers">
-                                        Таймеры:
-                                    </button>
-                                </div>
-                            </div>
-                            <div id="collapse_timers" class="collapse" aria-labelledby="heading_timers" data-parent="#accordion_timers">
-                                <div class="card-body p-0">
-                                    <table id="table_timers" class="table table-sm"></table>
+                <div class="accordion" id="switch_visible_table_stats">
+                    <div class="card">
+                        <div class="card-header" id="switch_visible_table_stats_head">
+                            <a href="#" class="btn btn-header-link collapsed" data-toggle="collapse" data-target="#switch_visible_table_stats_body"
+                                aria-expanded="true" aria-controls="switch_visible_table_stats_body"
+                            >
+                                Статистика
+                            </a>
+                        </div>
+                        <div id="switch_visible_table_stats_body" class="collapse" aria-labelledby="switch_visible_table_stats_head" data-parent="#switch_visible_table_stats">
+                            <div class="card-body p-2">
+                                <table id="table_stats" class="table mb-0">
+                                    <tr><td>Всего:</td><td id="stats_total">-</td></tr>
+                                    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Игр:</td><td id="stats_total_games">-</td></tr>
+                                    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;DLC:</td><td id="stats_total_DLC">-</td></tr>
+                                    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Другое:</td><td id="stats_total_other">-</td></tr>
+                                    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Пройдено:</td><td id="stats_total_finished_game">-</td></tr>
+                                    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Не пройдено:</td><td id="stats_total_not_finished_game">-</td></tr>
+                                    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Просмотрено:</td><td id="stats_total_finished_watched">-</td></tr>
+                                    <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Не просмотрено:</td><td id="stats_total_not_finished_watched">-</td></tr>
+                                    <tr><td>Платформ:</td><td id="stats_total_platforms">-</td></tr>
+                                    <tr><td>Поиск (мс):</td><td id="stats_elapsed_time_search">-</td></tr>
+                                    <tr style="display: none"><td>Найдено игр:</td><td id="stats_found_game">-</td></tr>
+                                </table>
+                                <div id="accordion_timers">
+                                    <div class="card">
+                                        <div class="card-header p-0" id="heading_timers">
+                                            <div class="mb-0">
+                                                <button class="btn btn-link w-100" data-toggle="collapse" data-target="#collapse_timers" aria-expanded="false" aria-controls="collapse_timers">
+                                                    Таймеры:
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div id="collapse_timers" class="collapse" aria-labelledby="heading_timers" data-parent="#accordion_timers">
+                                            <div class="card-body p-0">
+                                                <table id="table_timers" class="table table-sm"></table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
