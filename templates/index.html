@@ -65,44 +65,39 @@
         <div id="context" class="row flex-row-reverse" style="display: none">
             <div class="col-md-4 w-100 mb-3">
                 <div class="card-header">
-                    <button class="btn w-100" type="button"
+                    <button class="btn w-100"
                             data-toggle="collapse" data-target="#switch_visible_table_stats"
                             aria-expanded="true" aria-controls="switch_visible_table_stats"
                     >
                         Статистика
                     </button>
                 </div>
-                <div id="switch_visible_table_stats" class="collapse show">
-                    <div class="card card-body p-2">
-                        <table id="table_stats" class="table mb-0">
-                            <tr><td>Всего:</td><td id="stats_total">-</td></tr>
-                            <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Игр:</td><td id="stats_total_games">-</td></tr>
-                            <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;DLC:</td><td id="stats_total_DLC">-</td></tr>
-                            <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Другое:</td><td id="stats_total_other">-</td></tr>
-                            <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Пройдено:</td><td id="stats_total_finished_game">-</td></tr>
-                            <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Не пройдено:</td><td id="stats_total_not_finished_game">-</td></tr>
-                            <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Просмотрено:</td><td id="stats_total_finished_watched">-</td></tr>
-                            <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Не просмотрено:</td><td id="stats_total_not_finished_watched">-</td></tr>
-                            <tr><td>Платформ:</td><td id="stats_total_platforms">-</td></tr>
+                <div id="switch_visible_table_stats" class="card card-body p-0 collapse show">
+                    <table id="table_stats" class="table mb-0">
+                        <tr><td>Всего:</td><td id="stats_total">-</td></tr>
+                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Игр:</td><td id="stats_total_games">-</td></tr>
+                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;DLC:</td><td id="stats_total_DLC">-</td></tr>
+                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Другое:</td><td id="stats_total_other">-</td></tr>
+                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Пройдено:</td><td id="stats_total_finished_game">-</td></tr>
+                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Не пройдено:</td><td id="stats_total_not_finished_game">-</td></tr>
+                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Просмотрено:</td><td id="stats_total_finished_watched">-</td></tr>
+                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Не просмотрено:</td><td id="stats_total_not_finished_watched">-</td></tr>
+                        <tr><td>Платформ:</td><td id="stats_total_platforms">-</td></tr>
+                        <tr style="display: none"><td>Найдено игр:</td><td id="stats_found_game">-</td></tr>
+                    </table>
+
+                    <div class="card-header">
+                        <button class="btn w-100"
+                                data-toggle="collapse" data-target="#collapse_timers"
+                                aria-expanded="false" aria-controls="collapse_timers"
+                        >
+                            Таймеры:
+                        </button>
+                    </div>
+                    <div id="collapse_timers" class="card-body p-2 collapse">
+                        <table id="table_timers" class="table table-sm mb-0">
                             <tr><td>Поиск (мс):</td><td id="stats_elapsed_time_search">-</td></tr>
-                            <tr style="display: none"><td>Найдено игр:</td><td id="stats_found_game">-</td></tr>
                         </table>
-                        <div id="accordion_timers">
-                            <div class="card">
-                                <div class="card-header p-0" id="heading_timers">
-                                    <div class="mb-0">
-                                        <button class="btn btn-link w-100" data-toggle="collapse" data-target="#collapse_timers" aria-expanded="false" aria-controls="collapse_timers">
-                                            Таймеры:
-                                        </button>
-                                    </div>
-                                </div>
-                                <div id="collapse_timers" class="collapse" aria-labelledby="heading_timers" data-parent="#accordion_timers">
-                                    <div class="card-body p-0">
-                                        <table id="table_timers" class="table table-sm"></table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
