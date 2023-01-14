@@ -395,7 +395,7 @@ function setVisibleProgress(visible) {
     if (isMobile) {
         $("#glass").toggle(visible);
     } else {
-        $("#progressBar").parent().parent().parent().toggle(visible);
+        $("#progressBarWrapper").toggle(visible);
         $("#glass").hide();
     }
 }
