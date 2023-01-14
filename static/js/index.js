@@ -64,7 +64,7 @@ function get_played_games(on_response_func) {
 }
 
 function refresh_parse() {
-    $('#notify_need_refresh').hide();
+    $('#notify_need_refresh_wrapper').hide();
 
     get_played_games(process_played_games);
 }
@@ -72,7 +72,7 @@ function refresh_parse() {
 function check_actuality_of_cache() {
     // Если кэша нет
     if (localStorage.cache_result_json == null) {
-        $('#notify_need_refresh').show();
+        $('#notify_need_refresh_wrapper').show();
         return;
     }
 
@@ -89,11 +89,11 @@ function check_actuality_of_cache() {
         // Если кэш актуален
         if (is_actual_cache) {
             console.log("Cache is actual!");
-            $('#notify_need_refresh').hide();
+            $('#notify_need_refresh_wrapper').hide();
 
         } else {
             console.log("Cache is not actual!");
-            $('#notify_need_refresh').show();
+            $('#notify_need_refresh_wrapper').show();
         }
 
         finishTimer(timerName);
