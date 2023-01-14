@@ -42,7 +42,7 @@ function acceptFilters() {
 function show_error(text) {
     console.log('[-]', text);
 
-    $('#msg_error').show();
+    $('#msg_error_wrapper').show();
     $('#msg_error_text').text(text);
 }
 
