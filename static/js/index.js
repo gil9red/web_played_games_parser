@@ -1,8 +1,11 @@
-var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
 const TIMER_NAME_SEARCH = "Поиск";
 
 // SOURCE: https://stackoverflow.com/a/34842797/5909792
 const hashCode = s => s.split('').reduce((a,b) => (((a << 5) - a) + b.charCodeAt(0))|0, 0)
+
+const filterPlatform = $('#filter-by-platform-select');
+const filterCategory = $('#filter-by-category-select');
 
 function getNode(nodeEl) {
     let nodeId = nodeEl.attr('data-nodeid');
@@ -21,7 +24,20 @@ $(document).ready(function () {
 
     $('#switch_visible_table_stats').on("show.bs.collapse", () => on_change_visible_table_stats(true));
     $('#switch_visible_table_stats').on("hide.bs.collapse", () => on_change_visible_table_stats(false));
+
+    for (let value of CATEGORY_BY_TITLE.values()) {
+        filterCategory.append(new Option(value, value));
+    }
+
+    // Использование нативного меню для выбора элементов
+    if (isMobile) {
+        $(filterCategory).selectpicker('mobile');
+    }
 });
+
+function acceptFilters() {
+    update_tree_view();
+}
 
 function show_error(text) {
     console.log('[-]', text);
@@ -90,18 +106,23 @@ function onChangeNodeExpanded(event, node) {
         return;
     }
 
-    let nodeExpandedStates = null;
-    if (localStorage.nodeExpandedStates == null) {
-        nodeExpandedStates = new Map();
-    } else {
-        nodeExpandedStates = new Map(JSON.parse(localStorage.nodeExpandedStates));
+    // В текущей реализации фильтрации меняются nodeId, поэтому nodeId при сворачивании/разворачивании
+    // будут разные для одних и тех же узлов в зависимости от фильтра
+    // Поэтому, при фильтрации лучше избежать сохранения состояния узлов
+    if (!filterPlatform.val() && !filterCategory.val()) {
+        let nodeExpandedStates = null;
+        if (localStorage.nodeExpandedStates == null) {
+            nodeExpandedStates = new Map();
+        } else {
+            nodeExpandedStates = new Map(JSON.parse(localStorage.nodeExpandedStates));
+        }
+
+        nodeExpandedStates.set(node.nodeId, node.state.expanded);
+
+        localStorage.nodeExpandedStates = JSON.stringify(
+            Array.from(nodeExpandedStates.entries())
+        );
     }
-
-    nodeExpandedStates.set(node.nodeId, node.state.expanded);
-
-    localStorage.nodeExpandedStates = JSON.stringify(
-        Array.from(nodeExpandedStates.entries())
-    );
 
     for (let child of node.nodes) {
         if (child.tags && child.tags[0] == "0") {
@@ -171,7 +192,7 @@ function onSearchComplete(event, results) {
         let number = 0;
 
         $("#tree .node-tree.game").each( function(index) {
-            let node = getNode($(this));
+            let node = getNode($(this)); // level
             $('#tree').treeview("setVisible", [ node, node.searchResult ]);
 
             if (node.searchResult) {
@@ -253,6 +274,12 @@ function restoreNodesState() {
     for (let [nodeId, expanded] of nodeExpandedStates.entries()) {
         let node = tree.treeview("getNode", [ nodeId ]);
 
+        // Проверка, что элемент есть, т.к. при работе filterPlatform или filterCategory
+        // у дереве могут отсутствовать платформы или категории
+        if (!node.nodeId) {
+            continue;
+        }
+
         if (expanded) {
             tree.treeview("expandNode", [ node ]);
         } else {
@@ -268,8 +295,34 @@ function update_tree_view(tree_data) {
 
     if (tree_data == null) {
         let result_json = localStorage.cache_result_json;
-        platforms = JSON.parse(result_json);
+        let platforms = JSON.parse(result_json);
         tree_data = getJsonForTreeView(platforms);
+    }
+
+    // Инициализация комбобокса платформ
+    if (!filterPlatform.has('option').length) {
+        for (let platform of tree_data) {
+            filterPlatform.append(new Option(platform.text, platform.text));
+        }
+
+        // Использование нативного меню для выбора элементов
+        if (isMobile) {
+            $(filterPlatform).selectpicker('mobile');
+        }
+    }
+
+    let filteredPlatforms = filterPlatform.val();
+    let filteredCategories = filterCategory.val();
+    if (filteredPlatforms || filteredCategories) {
+        if (filteredPlatforms) {
+            tree_data = tree_data.filter(item => filteredPlatforms.includes(item.text));
+        }
+
+        if (filteredCategories) {
+            for (let platform of tree_data) {
+                platform.nodes = platform.nodes.filter(item => filteredCategories.includes(item.text));
+            }
+        }
     }
 
     $('#tree').treeview({
@@ -294,6 +347,7 @@ function update_tree_view(tree_data) {
         onSearchComplete: onSearchComplete,
         onSearchCleared: onSearchCleared,
     });
+
     $('#tree').on("click", function(event) {
         let el = $(event.target);
 
