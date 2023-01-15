@@ -334,6 +334,8 @@ function update_tree_view(tree_data) {
         highlightSelected: false,
         highlightSearchResults: false,
 
+        onhoverColor: '#3395ff', // Изменение выделения строк для темной темы
+
         // Events
         onNodeCollapsed: onChangeNodeExpanded,
         onNodeExpanded: onChangeNodeExpanded,
