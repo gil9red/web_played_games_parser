@@ -72,13 +72,12 @@
 }
 .card-header [data-toggle="collapse"]:after {
     font-family: 'Glyphicons Halflings';
-    content: "\e114";
+    content: "\e114";  /* .glyphicon-chevron-down */
     font-weight: 900;
     float: right;
 }
 .card-header [data-toggle="collapse"].collapsed:after {
-    font-family: 'Glyphicons Halflings';
-    content: "\e113";
+    content: "\e113"; /* .glyphicon-chevron-up */
 }
 
 /* Убираем скругление углов у кнопки комбобокса в фильтре */
