@@ -556,17 +556,18 @@ function updateGamesNumbers() {
     });
 }
 
+function update_tree_search_clear_states() {
+    let $tree_search = $('#tree-search');
+    let $tree_search_clear = $('.tree-search-clear');
+    $tree_search_clear.prop('disabled', !$tree_search.val());
+}
+
 $(document).ready(function() {
     var typingTimer = null;       // Timer identifier
     var doneTypingInterval = 300; // Time in ms
 
     let $tree_search = $('#tree-search');
     let $tree_search_clear = $('.tree-search-clear');
-
-    function update_tree_search_clear_states() {
-        $tree_search_clear.prop('disabled', !$tree_search.val());
-    }
-    update_tree_search_clear_states();
 
     $tree_search_clear.click(function() {
         $tree_search.val('');
@@ -600,9 +601,7 @@ $(document).ready(function() {
     })
 
     $('#notify_need_refresh').click(refresh_parse);
-});
 
-$(document).ready(function() {
     $('#context').show();
 
     // Заполнение строки поиска из локального хранилища
@@ -612,6 +611,8 @@ $(document).ready(function() {
     if (search_text && !tree_search.val()) {
         tree_search.val(search_text);
     }
+
+    update_tree_search_clear_states();
 
     // Попробуем при загрузке страницы вытащить данные из кэша
     if (localStorage.cache_result_json != null) {
