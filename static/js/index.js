@@ -4,8 +4,66 @@ const TIMER_NAME_SEARCH = "Поиск";
 // SOURCE: https://stackoverflow.com/a/34842797/5909792
 const hashCode = s => s.split('').reduce((a,b) => (((a << 5) - a) + b.charCodeAt(0))|0, 0)
 
-const filterPlatform = $('#filter-by-platform-select');
-const filterCategory = $('#filter-by-category-select');
+const $filterPlatform = $('#filter-by-platform-select');
+const $filterCategory = $('#filter-by-category-select');
+
+
+class UrlQuery {
+    static getParam(name) {
+        let params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    static setParamValue(name, value) {
+        let params = new URLSearchParams(window.location.search)
+
+        if (value) {
+            params.set(name, value);
+        } else {
+            params.delete(name);
+        }
+
+        let newRelativePathQuery = window.location.pathname + '?' + params.toString();
+        history.pushState(null, '', newRelativePathQuery);
+    }
+
+    static setParamValues(name, values) {
+        if (values == null || values.length == 0) {
+            values = null;
+        }
+        this.setParamValue(name, values);
+    }
+
+    static getParamAsArray(name) {
+        let value = this.getParam(name);
+        return value ? value.split(",") : [];
+    }
+
+    static getSearch() {
+        return this.getParam("search");
+    }
+
+    static setSearch(search) {
+        this.setParamValue("search", search);
+    }
+
+    static getFilterPlatforms() {
+        return this.getParamAsArray("filter_platforms");
+    }
+
+    static setFilterPlatforms(filterPlatforms) {
+        this.setParamValues("filter_platforms", filterPlatforms);
+    }
+
+    static getFilterCategories() {
+        return this.getParamAsArray("filter_categories");
+    }
+
+    static setFilterCategories(filterCategories) {
+        this.setParamValues("filter_categories", filterCategories);
+    }
+}
+
 
 function getNode(nodeEl) {
     let nodeId = nodeEl.attr('data-nodeid');
@@ -25,17 +83,22 @@ $(document).ready(function () {
     $('#switch_visible_table_stats').on("show.bs.collapse", () => on_change_visible_table_stats(true));
     $('#switch_visible_table_stats').on("hide.bs.collapse", () => on_change_visible_table_stats(false));
 
-    for (let value of CATEGORY_BY_TITLE.values()) {
-        filterCategory.append(new Option(value, value));
+    for (let [value, title] of CATEGORY_BY_TITLE) {
+        $filterCategory.append(new Option(title, value));
     }
+
+    $filterCategory.selectpicker('val', UrlQuery.getFilterCategories());
 
     // Использование нативного меню для выбора элементов
     if (isMobile) {
-        $(filterCategory).selectpicker('mobile');
+        $filterCategory.selectpicker('mobile');
     }
 });
 
 function acceptFilters() {
+    UrlQuery.setFilterPlatforms($filterPlatform.val());
+    UrlQuery.setFilterCategories($filterCategory.val());
+
     update_tree_view();
 }
 
@@ -109,7 +172,7 @@ function onChangeNodeExpanded(event, node) {
     // В текущей реализации фильтрации меняются nodeId, поэтому nodeId при сворачивании/разворачивании
     // будут разные для одних и тех же узлов в зависимости от фильтра
     // Поэтому, при фильтрации лучше избежать сохранения состояния узлов
-    if (!filterPlatform.val() && !filterCategory.val()) {
+    if (!$filterPlatform.val() && !$filterCategory.val()) {
         let nodeExpandedStates = null;
         if (localStorage.nodeExpandedStates == null) {
             nodeExpandedStates = new Map();
@@ -274,7 +337,7 @@ function restoreNodesState() {
     for (let [nodeId, expanded] of nodeExpandedStates.entries()) {
         let node = tree.treeview("getNode", [ nodeId ]);
 
-        // Проверка, что элемент есть, т.к. при работе filterPlatform или filterCategory
+        // Проверка, что элемент есть, т.к. при работе $filterPlatform или $filterCategory
         // у дереве могут отсутствовать платформы или категории
         if (!node.nodeId) {
             continue;
@@ -300,19 +363,22 @@ function update_tree_view(tree_data) {
     }
 
     // Инициализация комбобокса платформ
-    if (!filterPlatform.has('option').length) {
+    if (!$filterPlatform.has('option').length) {
         for (let platform of tree_data) {
-            filterPlatform.append(new Option(platform.text, platform.text));
+            $filterPlatform.append(new Option(platform.text, platform.text));
         }
 
         // Использование нативного меню для выбора элементов
         if (isMobile) {
-            $(filterPlatform).selectpicker('mobile');
+            $filterPlatform.selectpicker('mobile');
         }
+
+        // Выбор значений
+        $filterPlatform.selectpicker('val', UrlQuery.getFilterPlatforms());
     }
 
-    let filteredPlatforms = filterPlatform.val();
-    let filteredCategories = filterCategory.val();
+    let filteredPlatforms = $filterPlatform.val();
+    let filteredCategories = $filterCategory.val().map((value) => CATEGORY_BY_TITLE.get(value));
     if (filteredPlatforms || filteredCategories) {
         if (filteredPlatforms) {
             tree_data = tree_data.filter(item => filteredPlatforms.includes(item.text));
@@ -411,7 +477,7 @@ function search(e) {
     let text = $('#tree-search').val();
     console.log(`Call search "${text}"`);
 
-    localStorage.search_text = text;
+    UrlQuery.setSearch(text);
 
     tree.treeview('clearSearch');
     if (text.length == 0) {
@@ -607,9 +673,10 @@ $(document).ready(function() {
     // Заполнение строки поиска из локального хранилища
     // Нужно вызвать до работы с деревом, что ниже
     let tree_search = $('#tree-search');
-    let search_text = localStorage.search_text;
-    if (search_text && !tree_search.val()) {
-        tree_search.val(search_text);
+
+    let searchText = UrlQuery.getSearch();
+    if (searchText) {
+        tree_search.val(searchText);
     }
 
     update_tree_search_clear_states();
