@@ -378,15 +378,16 @@ function update_tree_view(tree_data) {
     }
 
     let filteredPlatforms = $filterPlatform.val();
-    let filteredCategories = $filterCategory.val().map((value) => CATEGORY_BY_TITLE.get(value));
+    let filteredCategories = $filterCategory.val();
     if (filteredPlatforms || filteredCategories) {
         if (filteredPlatforms) {
             tree_data = tree_data.filter(item => filteredPlatforms.includes(item.text));
         }
 
         if (filteredCategories) {
+            let titles = filteredCategories.map((value) => CATEGORY_BY_TITLE.get(value));
             for (let platform of tree_data) {
-                platform.nodes = platform.nodes.filter(item => filteredCategories.includes(item.text));
+                platform.nodes = platform.nodes.filter(item => titles.includes(item.text));
             }
         }
     }
