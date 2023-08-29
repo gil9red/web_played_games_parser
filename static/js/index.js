@@ -23,7 +23,10 @@ class UrlQuery {
             params.delete(name);
         }
 
-        let newRelativePathQuery = window.location.pathname + '?' + params.toString();
+        let newRelativePathQuery = window.location.pathname;
+        if (params.size > 0) {
+             newRelativePathQuery += '?' + params.toString()
+        }
         history.pushState(null, '', newRelativePathQuery);
     }
 
