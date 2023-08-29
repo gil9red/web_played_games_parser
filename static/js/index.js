@@ -530,16 +530,16 @@ function updateStatistics(platforms=null) {
             total_games += games.length;
 
             switch (category_name) {
-                case 'FINISHED_GAME':
+                case FINISHED_GAME:
                     total_finished_game += games.length;
                     break;
-                case 'NOT_FINISHED_GAME':
+                case NOT_FINISHED_GAME:
                     total_not_finished_game += games.length;
                     break;
-                case 'FINISHED_WATCHED':
+                case FINISHED_WATCHED:
                     total_finished_watched += games.length;
                     break;
-                case 'NOT_FINISHED_WATCHED':
+                case NOT_FINISHED_WATCHED:
                     total_not_finished_watched += games.length;
                     break;
             }
