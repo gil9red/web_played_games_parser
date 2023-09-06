@@ -4,10 +4,12 @@
 __author__ = "ipetrash"
 
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, session
 
 # pip install Flask-HTTPAuth
-from flask_httpauth import HTTPDigestAuth
+from flask_httpauth import HTTPBasicAuth
+
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from config import SECRET_KEY, users
 from third_party.mini_played_games_parser import get_played_games
@@ -17,12 +19,30 @@ app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
 app.config["SECRET_KEY"] = SECRET_KEY
 
-auth = HTTPDigestAuth()
+auth = HTTPBasicAuth()
 
 
-@auth.get_password
-def get_password(username: str) -> str | None:
-    return users.get(username)
+USERS = {
+    login: generate_password_hash(password)
+    for login, password in users.items()
+}
+
+
+@auth.verify_password
+def verify_password(username: str, password: str) -> str | None:
+    # Запрос без авторизации, попробуем проверить куки
+    if not username or not password:
+        username = session.get("x-auth-username")
+        password = session.get("x-auth-password")
+
+    # Если проверка успешна, то сохраним логин/пароль, чтобы можно было авторизоваться из куков
+    # Сессии зашифрованы секретным ключом, поэтому можно хранить как есть
+    if username in USERS and check_password_hash(USERS.get(username), password):
+        session["x-auth-username"] = username
+        session["x-auth-password"] = password
+        session.permanent = True
+
+        return username
 
 
 @app.route("/")
