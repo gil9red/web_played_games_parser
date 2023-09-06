@@ -4,31 +4,18 @@
 __author__ = "ipetrash"
 
 
-import json
-
-from pathlib import Path
-
 from flask import Flask, render_template, jsonify
 
 # pip install Flask-HTTPAuth
 from flask_httpauth import HTTPDigestAuth
 
+from config import SECRET_KEY, users
 from third_party.mini_played_games_parser import get_played_games
-
-
-DIR = Path(__file__).resolve().parent
-PATH_USERS = DIR / "users.json"
-
-# Example:
-# {
-#     "<LOGIN>": "<PASSWORD>"
-# }
-users = json.loads(PATH_USERS.read_text("utf-8"))
 
 
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
-app.config["SECRET_KEY"] = "<SECRET_KEY_HERE>"
+app.config["SECRET_KEY"] = SECRET_KEY
 
 auth = HTTPDigestAuth()
 

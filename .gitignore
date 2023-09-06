@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 # Current project
+SECRET_KEY.txt
 users.json
