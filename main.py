@@ -5,6 +5,7 @@ __author__ = "ipetrash"
 
 
 from flask import Flask, render_template, jsonify, session
+from datetime import timedelta
 
 # pip install Flask-HTTPAuth
 from flask_httpauth import HTTPBasicAuth
@@ -16,8 +17,9 @@ from third_party.mini_played_games_parser import get_played_games
 
 
 app = Flask(__name__)
-app.config["JSON_SORT_KEYS"] = False
-app.config["SECRET_KEY"] = SECRET_KEY
+app.json.sort_keys = False
+app.permanent_session_lifetime = timedelta(days=365)
+app.secret_key = SECRET_KEY
 
 auth = HTTPBasicAuth()
 
