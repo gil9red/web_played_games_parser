@@ -25,7 +25,7 @@ app.secret_key = SECRET_KEY
 auth = HTTPBasicAuth()
 
 
-USERS = {
+USERS: dict[str, str] = {
     login: generate_password_hash(password)
     for login, password in users.items()
 }
