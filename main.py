@@ -4,8 +4,9 @@
 __author__ = "ipetrash"
 
 
-from flask import Flask, render_template, jsonify, session
 from datetime import timedelta
+
+from flask import Flask, render_template, jsonify, session, request
 
 # pip install Flask-HTTPAuth
 from flask_httpauth import HTTPBasicAuth
@@ -31,7 +32,11 @@ USERS = {
 
 
 @auth.verify_password
-def verify_password(username: str, password: str) -> str | None:
+def verify_password(username: str, password: str) -> str | bool | None:
+    # Не проверять для 127.0.0.1
+    if request.remote_addr == "127.0.0.1":
+        return True
+
     # Запрос без авторизации, попробуем проверить куки
     if not username or not password:
         username = session.get("x-auth-username")
